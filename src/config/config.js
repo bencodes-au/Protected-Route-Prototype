@@ -1,7 +1,7 @@
-// import dotenv
 require("dotenv").config();
 
-// export the features in our environment so we can reference them elsewhere
+//  Loads environment variables from .env and exports them for use throughout the app.
+
 module.exports = {
   MONGO_URI: process.env.MONGO_URI,
   jwtSecret: process.env.JWT_SECRET,
