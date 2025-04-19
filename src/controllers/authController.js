@@ -34,4 +34,42 @@ async function register(req, res) {
   }
 }
 
-module.exports = { register };
+/**
+ * Handles user login.
+ * Validates user credentials, compares passwords,
+ * and returns a signed JWT if successful.
+ */
+async function login(req, res) {
+  const { username, password } = req.body;
+
+  try {
+    // Find the user in the database by username
+    const user = await User.findOne({ username });
+    if (!user)
+      return res
+        .status(401)
+        .json({ message: "Username or Password is incorrect" });
+
+    // Compare the provided password with the stored hashed password
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid)
+      return res
+        .status(401)
+        .json({ message: "Username or Password is incorrect" });
+
+    // Create a JWT token containing user data (ID and username)
+    const token = jwt.sign(
+      { id: user._id, username: user.username },
+      jwtSecret,
+      { expiresIn: "1h" }
+    );
+
+    // Return the JWT token to the client
+    res.json({ token });
+  } catch (err) {
+    // Handle errors (e.g., server or database errors)
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+module.exports = { register, login };
