@@ -1,9 +1,9 @@
 const express = require("express");
-const connectDB = require("./config/db");
-const { port } = require("./config/config");
+const connectDB = require("./src/config/db");
+const { port } = require("./src/config/config");
 
-const authRoutes = require("./routes/auth");
-const protectedRoutes = require("./routes/protected");
+const authRoutes = require("./src/routes/auth");
+const protectedRoutes = require("./src/routes/protected");
 
 const app = express();
 

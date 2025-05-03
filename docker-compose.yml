@@ -1,24 +1,22 @@
-version: '1'
+version: '1.0'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: protected-route-prototype
+    build: .
+    container_name: protected-route-app
+    ports:
+      - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://localhost:27017/protected-route-prototype
+      - MONGO_URI=mongodb://mongo:27017/protected-route-prototype
       - JWT_SECRET=secretkey1
       - PORT=3000
       - NODE_ENV=development
-    ports:
-      - "3000:3000"
     depends_on:
       - mongo
 
   mongo:
     image: mongo:6
-    container_name: mongo-db
+    container_name: jwt-mongo
     ports:
       - "27017:27017"
     volumes:

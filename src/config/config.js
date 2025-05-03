@@ -1,6 +1,8 @@
 require("dotenv").config();
 
-//  Loads environment variables from .env and exports them for use throughout the app.
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 module.exports = {
   MONGO_URI: process.env.MONGO_URI,
