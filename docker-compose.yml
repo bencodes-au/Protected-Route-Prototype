@@ -3,6 +3,7 @@ version: "2.0"
 services:
   frontend:
     build: ./frontend
+    image: protected-route/frontend:dev
     container_name: protected-route-frontend
     ports:
       - "3001:3001"
@@ -13,11 +14,13 @@ services:
 
   backend:
     build: ./backend
+    image: protected-route/backend:dev
     container_name: protected-route-backend
     ports:
       - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://protected-route-mongo:27017/protected-route-prototype
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://protected-route-database:27017/protected-route-prototype
       - JWT_SECRET=secretkey1
       - PORT=3000
     depends_on:
@@ -25,7 +28,7 @@ services:
 
   mongo:
     image: mongo:6
-    container_name: protected-route-mongo
+    container_name: protected-route-database
     ports:
       - "27017:27017"
     volumes:
