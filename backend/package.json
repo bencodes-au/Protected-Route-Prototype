@@ -10,9 +10,13 @@
   "version": "1.0.0",
   "description": "Building a tutorial prototype for a protected route using Javascript, Express, Jsonwebtoken and dotenv. This was made for a Technical Blog Post as part of my study at Coder Academy.",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",

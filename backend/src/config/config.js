@@ -5,7 +5,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 module.exports = {
-  MONGO_URI: process.env.MONGO_URI,
+  MONGO_URI:
+    process.env.MONGO_URI || "mongodb://mongo:27017/protected-route-prototype",
   jwtSecret: process.env.JWT_SECRET,
   port: process.env.PORT || 3000,
 };

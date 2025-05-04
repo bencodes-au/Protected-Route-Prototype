@@ -1,22 +1,31 @@
-version: '1.0'
+version: "2.0"
 
 services:
-  app:
-    build: .
-    container_name: protected-route-app
+  frontend:
+    build: ./frontend
+    container_name: protected-route-frontend
+    ports:
+      - "3001:3001"
+    environment:
+      - VITE_API_BASE_URL=http://protected-route-backend:3000/api
+    depends_on:
+      - backend 
+
+  backend:
+    build: ./backend
+    container_name: protected-route-backend
     ports:
       - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/protected-route-prototype
+      - MONGO_URI=mongodb://protected-route-mongo:27017/protected-route-prototype
       - JWT_SECRET=secretkey1
       - PORT=3000
-      - NODE_ENV=development
     depends_on:
-      - mongo
+      - mongo      
 
   mongo:
     image: mongo:6
-    container_name: jwt-mongo
+    container_name: protected-route-mongo
     ports:
       - "27017:27017"
     volumes:
