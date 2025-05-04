@@ -20,5 +20,5 @@ export default function Dashboard() {
       });
   }, []);
 
-  return <h1>🔐 Protected Dashboard: {message}</h1>;
+  return <h1>Protected Dashboard: {message}</h1>;
 }
