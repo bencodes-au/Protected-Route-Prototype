@@ -1,23 +1,35 @@
 const express = require("express");
-const connectDB = require("./src/config/db");
-const { port } = require("./src/config/config");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const authRoutes = require("./src/routes/auth");
 const protectedRoutes = require("./src/routes/protected");
 
 const app = express();
 
-// Initializes middleware to parse JSON request bodies.
+// Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Connects to the MongoDB database.
-connectDB();
-
-// Sets up API routes for authentication and protected access.
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api", protectedRoutes);
 
-// Starts the Express server on the configured port.
-app.listen(port, () =>
-  console.log(`Server running on http://localhost:${port}`)
-);
+// Connect to MongoDB and start the server only if not in test environment
+if (process.env.NODE_ENV !== "test") {
+  mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+      app.listen(process.env.PORT || 3000, () => {
+        console.log(
+          `Server running on http://localhost:${process.env.PORT || 3000}`
+        );
+      });
+    })
+    .catch((err) => {
+      console.error("MongoDB connection error:", err.message);
+    });
+}
+
+module.exports = app;
