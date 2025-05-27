@@ -3,10 +3,9 @@ const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const app = require("../server");
 const User = require("../src/models/User");
+import { beforeAll, afterAll, describe, expect, test } from "vitest";
 
 let mongoServer;
-
-jest.setTimeout(30000);
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
