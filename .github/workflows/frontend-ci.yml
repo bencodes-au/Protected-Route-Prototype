@@ -35,7 +35,7 @@ jobs:
         working-directory: frontend
 
       - name: Upload test logs artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: frontend-test-logs
           path: frontend/test-log.txt

@@ -28,7 +28,7 @@ jobs:
       run: npm test
 
     - name: Upload test logs
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: test-logs
         path: backend/logs/test-report.txt
