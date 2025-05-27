@@ -3,10 +3,10 @@ name: Backend CI
 on:
   push:
     branches:
-      - main
+      - dev
   pull_request:
     branches:
-      - dev
+      - main
   schedule:
     - cron: '0 10 * * 1' 
 
@@ -41,4 +41,4 @@ jobs:
       - name: Parse test logs with custom action
         uses: ./.github/actions
         with:
-          test-log: backend/test-log.txt
+          log-path: backend/test-log.txt

@@ -1,12 +1,9 @@
-name: Parse Test Logs
-description: "Parses test logs and outputs summary"
-
+name: 'Parse Test Logs'
+description: 'Parse and process test logs file'
 inputs:
   log-path:
     description: 'Path to the test log file'
     required: true
-    default: 'test-log.txt'
-
 runs:
   using: 'node20'
   main: 'parse-tests.js'
