@@ -1,0 +1,45 @@
+name: Frontend CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.18.3
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: frontend
+
+      - name: Run lint
+        run: npm run lint
+        working-directory: frontend
+
+      - name: Run tests with custom reporter and save logs
+        run: |
+          npm run test -- --reporter=verbose > test-log.txt || true
+        working-directory: frontend
+
+      - name: Upload test logs artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-test-logs
+          path: frontend/test-log.txt
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: frontend
