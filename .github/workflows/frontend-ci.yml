@@ -32,16 +32,16 @@ jobs:
           npm run test -- --reporter=verbose > test-log.txt || true
         working-directory: frontend
 
-      - name: Parse test logs with custom action
-        uses: ./github/actions/parse-vitest-logs
-        with:
-          log-path: frontend/test-log.txt
-
       - name: Upload test logs artifact
         uses: actions/upload-artifact@v4.6.2
         with:
           name: frontend-test-logs
           path: frontend/test-log.txt
+
+      - name: Parse test logs with custom action
+        uses: ./.github/actions
+        with:
+          test-log: frontend/test-log.txt
 
       - name: Build frontend
         run: npm run build

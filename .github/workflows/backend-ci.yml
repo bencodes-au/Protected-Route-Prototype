@@ -8,7 +8,7 @@ on:
     branches:
       - dev
   schedule:
-    - cron: '0 10 * * 1'  
+    - cron: '0 10 * * 1' 
 
 jobs:
   test:
@@ -32,13 +32,13 @@ jobs:
           npm run test -- --reporter=verbose > test-log.txt || true
         working-directory: backend
 
-      - name: Parse test logs with custom action
-        uses: ./github/actions/parse-vitest-logs
-        with:
-          log-path: backend/test-log.txt
-
       - name: Upload test logs artifact
         uses: actions/upload-artifact@v4.6.2
         with:
           name: backend-test-logs
           path: backend/test-log.txt
+
+      - name: Parse test logs with custom action
+        uses: ./.github/actions
+        with:
+          test-log: backend/test-log.txt
