@@ -8,7 +8,7 @@ on:
     branches:
       - dev
   schedule:
-    - cron: '0 10 * * 1' 
+    - cron: '0 10 * * 1'
 
 jobs:
   test:
@@ -37,11 +37,6 @@ jobs:
         with:
           name: frontend-test-logs
           path: frontend/test-log.txt
-
-      - name: Parse test logs with custom action
-        uses: ./.github/actions
-        with:
-          test-log: frontend/test-log.txt
 
       - name: Build frontend
         run: npm run build
