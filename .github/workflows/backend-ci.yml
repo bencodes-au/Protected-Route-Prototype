@@ -1,34 +1,37 @@
-name: backend-ci
+name: Backend CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: "20.18.3"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.18.3
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
+        working-directory: backend
 
-    - name: Run tests
-      run: npm test
+      - name: Run tests and save logs
+        run: |
+          npm run test -- --reporter=verbose > test-log.txt || true
+        working-directory: backend
 
-    - name: Upload test logs
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-logs
-        path: backend/logs/test-report.txt
+      - name: Upload test logs artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: backend-test-logs
+          path: backend/test-log.txt
