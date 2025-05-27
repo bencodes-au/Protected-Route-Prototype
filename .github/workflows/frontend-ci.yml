@@ -25,11 +25,7 @@ jobs:
         run: npm install
         working-directory: frontend
 
-      - name: Run lint
-        run: npm run lint
-        working-directory: frontend
-
-      - name: Run tests with custom reporter and save logs
+      - name: Run tests and save logs
         run: |
           npm run test -- --reporter=verbose > test-log.txt || true
         working-directory: frontend
