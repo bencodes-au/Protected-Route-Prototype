@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const { MONGO_URI, port } = require("./src/config/config");
+
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -19,12 +21,10 @@ app.use("/api", protectedRoutes);
 // Connect to MongoDB and start the server only if not in test environment
 if (process.env.NODE_ENV !== "test") {
   mongoose
-    .connect(process.env.MONGO_URI)
+    .connect(MONGO_URI)
     .then(() => {
-      app.listen(process.env.PORT || 3000, () => {
-        console.log(
-          `Server running on http://localhost:${process.env.PORT || 3000}`
-        );
+      app.listen(port, () => {
+        console.log(`Server running on http://localhost:${port}`);
       });
     })
     .catch((err) => {
