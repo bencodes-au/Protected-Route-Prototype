@@ -3,7 +3,7 @@ name: Deploy to ECS
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   deploy:
@@ -29,18 +29,20 @@ jobs:
 
       - name: Set environment variables
         run: |
+          echo "AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}" >> $GITHUB_ENV
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
           echo "FRONTEND_IMAGE=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest" >> $GITHUB_ENV
           echo "BACKEND_IMAGE=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend:latest" >> $GITHUB_ENV
 
       - name: Build, tag, and push frontend Docker image
         run: |
-          docker build -t frontend ./frontend
+          docker build -f Dockerfile.frontend -t frontend .
           docker tag frontend:latest $FRONTEND_IMAGE
           docker push $FRONTEND_IMAGE
 
       - name: Build, tag, and push backend Docker image
         run: |
-          docker build -t backend ./backend
+          docker build -f Dockerfile.backend -t backend .
           docker tag backend:latest $BACKEND_IMAGE
           docker push $BACKEND_IMAGE
 
