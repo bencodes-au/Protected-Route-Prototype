@@ -1,13 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { MONGO_URI, port } = require("./src/config/config");
+const { MONGO_URI, port } = require("./backend/src/config/config");
 
 const dotenv = require("dotenv");
 
 dotenv.config();
 
-const authRoutes = require("./src/routes/auth");
-const protectedRoutes = require("./src/routes/protected");
+const authRoutes = require("./backend/src/routes/auth");
+const protectedRoutes = require("./backend/src/routes/protected");
 
 const app = express();
 
