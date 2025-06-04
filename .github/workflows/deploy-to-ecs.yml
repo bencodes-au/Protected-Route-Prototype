@@ -32,7 +32,7 @@ jobs:
           echo "AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}" >> $GITHUB_ENV
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
           echo "FRONTEND_IMAGE=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest" >> $GITHUB_ENV
-          echo "BACKEND_IMAGE=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend:latest" >> $GITHUB_ENV
+          echo "BACKEND_IMAGE=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/protected-route-backend:latest" >> $GITHUB_ENV
 
       - name: Build, tag, and push frontend Docker image
         run: |
@@ -46,10 +46,26 @@ jobs:
           docker tag backend:latest $BACKEND_IMAGE
           docker push $BACKEND_IMAGE
 
-      - name: Deploy to ECS
+      - name: Update backend task definition with new image
+        run: |
+          sed "s|IMAGE_PLACEHOLDER|$BACKEND_IMAGE|" ecs-task-def-backend.template.json > ecs-task-def-backend.json
+
+      - name: Update frontend task definition with new image
+        run: |
+          sed "s|IMAGE_PLACEHOLDER|$FRONTEND_IMAGE|" ecs-task-def-frontend.template.json > ecs-task-def-frontend.json
+
+      - name: Deploy backend to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ecs-task-def.json
-          service: ${{ secrets.ECS_SERVICE_NAME }}
+          task-definition: ecs-task-def-backend.json
+          service: ${{ secrets.ECS_BACKEND_SERVICE_NAME }}
+          cluster: ${{ secrets.ECS_CLUSTER_NAME }}
+          wait-for-service-stability: true
+
+      - name: Deploy frontend to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ecs-task-def-frontend.json
+          service: ${{ secrets.ECS_FRONTEND_SERVICE_NAME }}
           cluster: ${{ secrets.ECS_CLUSTER_NAME }}
           wait-for-service-stability: true
