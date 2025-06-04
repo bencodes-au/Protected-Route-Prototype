@@ -7,8 +7,8 @@
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "build": "vite build",
     "test": "vitest run",
-    "docker:build:backend": "docker build -f Dockerfile.backend -t protected-route/backend:dev ./backend",
-    "docker:build:frontend": "docker build -f Dockerfile.frontend -t protected-route/frontend:dev ./frontend",
+    "docker:build:backend": "docker build -f Dockerfile.backend -t protected-route/backend:dev .",
+    "docker:build:frontend": "docker build -f Dockerfile.frontend -t protected-route/frontend:dev .",
     "docker:build:all": "npm run docker:build:backend && npm run docker:build:frontend"
   },
   "dependencies": {
