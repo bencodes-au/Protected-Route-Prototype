@@ -8,7 +8,7 @@
   "containerDefinitions": [
     {
       "name": "backend",
-      "image": "480537743041.dkr.ecr.ap-southeast-2.amazonaws.com/protected-route-backend:latest",
+      "image": "IMAGE_PLACEHOLDER",
       "portMappings": [
         {
           "containerPort": 3000,
@@ -19,9 +19,7 @@
       "essential": true,
       "environment": [
         { "name": "NODE_ENV", "value": "production" },
-        { "name": "PORT", "value": "3000" },
-        { "name": "MONGO_URI", "value": "mongodb://your-db-host:27017/protected-route-prototype" },
-        { "name": "JWT_SECRET", "value": "your-secret-key" }
+        { "name": "PORT", "value": "3000" }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",

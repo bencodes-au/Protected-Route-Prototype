@@ -8,7 +8,7 @@
   "containerDefinitions": [
     {
       "name": "frontend",
-      "image": "480537743041.dkr.ecr.ap-southeast-2.amazonaws.com/frontend:latest",
+      "image": "IMAGE_PLACEHOLDER",
       "portMappings": [
         {
           "containerPort": 3001,
@@ -20,7 +20,7 @@
       "environment": [
         {
           "name": "VITE_API_BASE_URL",
-          "value": "http://<backend-service-name>:3000/api"
+          "value": "http://172.31.26.32:3000/api"
         }
       ],
       "logConfiguration": {
