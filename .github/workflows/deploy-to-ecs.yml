@@ -4,7 +4,16 @@ on:
   push:
     branches:
       - main
-      - dev
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'production'
+
+  schedule:
+    - cron: "0 23 * * 0" 
 
 jobs:
   deploy:
@@ -12,11 +21,34 @@ jobs:
     runs-on: ubuntu-latest
 
     environment:
-      name: production
+      name: ${{ github.event.inputs.environment || 'production' }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run frontend tests
+        run: |
+          npx vitest run frontend/src/tests --reporter=verbose | tee frontend-test-log.txt
+
+      - name: Run backend tests
+        run: |
+          npx vitest run backend/tests --reporter=verbose | tee backend-test-log.txt
+
+      - name: Upload frontend test logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-logs
+          path: frontend-test-log.txt
+
+      - name: Upload backend test logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-logs
+          path: backend-test-log.txt
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
