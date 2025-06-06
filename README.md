@@ -3,7 +3,7 @@
 This application is a prototype for a protected route. This MERN stack was first built to demonstrate how a beginner developer can implement authorisation into their project, quickly and safely. Over time I have used this project as the basis of other learning. It has since been containerised, then had a local testing suite built on Github actions, and now has a complete CI/CD pipeline hosted with AWS Fargate.
 
 This deployment can currently be seen at: http://13.210.246.184:3001/
-*This may be taken down in time due to AWS costs*
+(*This may be taken down in time to prevent AWS charges*)
 
 # Automation Workflow
 Automation is crucial to modern DevOps practices. With applications growing in complexity, it is essential to streamline deployment pipelines to achieve speed, reliability, and scalability. This implementation of such a pipeline uses a MERN stack application, Docker, AWS Fargate, and GitHub Actions. At the heart of this system lies an automation workflow defined in a YAML file deploy-to-ecs.yml which handles the building and deployment of the application. 
@@ -25,6 +25,25 @@ on:
     branches:
       - main
 ```      
+
+To improve automation flexibility and reliability, two advanced CI/CD triggers were added:
+- Manual Trigger (workflow_dispatch): This enables on-demand deployments directly from the GitHub Actions UI. It includes an optional input field to specify the environment, which defaults to "production" if not set. This is useful for ad hoc testing, hotfixes, or re-deployments without needing to push a commit.
+
+- Scheduled Trigger (cron): A schedule was implemented using cron syntax to automatically trigger the deployment every Monday at 10:00 AM. This ensures consistent and regular updates are pushed to production without manual intervention.
+
+```
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'production'
+
+
+  schedule:
+    - cron: "0 23 * * 0"
+```
+
 ### 2. Workflow Environment and Runner
 The workflow runs on GitHub-hosted Ubuntu machines. Additionally, it specifies an environment label (production), enabling GitHub’s environment protection rules and secrets management.
 ```

@@ -5,13 +5,23 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'production'
+
+  schedule:
+    - cron: "0 23 * * 0" 
+
 jobs:
   deploy:
     name: Build & Deploy to AWS ECS
     runs-on: ubuntu-latest
 
     environment:
-      name: production
+      name: ${{ github.event.inputs.environment || 'production' }}
 
     steps:
       - name: Checkout code
