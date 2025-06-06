@@ -1,9 +1,9 @@
-const request = require("supertest");
-const mongoose = require("mongoose");
-const { MongoMemoryServer } = require("mongodb-memory-server");
-const app = require("../server");
-const User = require("../src/models/User");
-import { beforeAll, afterAll, describe, expect, test } from "vitest";
+import request from "supertest";
+import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
+import app from "../../server";
+import User from "../src/models/User";
+import { beforeAll, afterAll, afterEach, describe, expect, it } from "vitest";
 
 let mongoServer;
 

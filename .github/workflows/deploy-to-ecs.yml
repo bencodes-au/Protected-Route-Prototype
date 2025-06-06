@@ -30,13 +30,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run frontend tests
-        run: |
-          npx vitest run frontend/src/tests --reporter=verbose | tee frontend-test-log.txt
+      - name: Run frontend tests and save logs
+        run: npx vitest run --root frontend --reporter=verbose | tee frontend-test-log.txt
 
-      - name: Run backend tests
-        run: |
-          npx vitest run backend/tests --reporter=verbose | tee backend-test-log.txt
+      - name: Run backend tests and save logs
+        run: npx vitest run --root backend --reporter=verbose | tee backend-test-log.txt
 
       - name: Upload frontend test logs
         uses: actions/upload-artifact@v4
