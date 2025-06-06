@@ -1,24 +1,20 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const { MONGO_URI, port } = require("./backend/src/config/config");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import { MONGO_URI, port } from "./backend/src/config/config.js";
 
-const dotenv = require("dotenv");
+import authRoutes from "./backend/src/routes/auth.js";
+import protectedRoutes from "./backend/src/routes/protected.js";
 
 dotenv.config();
 
-const authRoutes = require("./backend/src/routes/auth");
-const protectedRoutes = require("./backend/src/routes/protected");
-
 const app = express();
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api", protectedRoutes);
 
-// Connect to MongoDB and start the server only if not in test environment
 if (process.env.NODE_ENV !== "test") {
   mongoose
     .connect(MONGO_URI)
@@ -32,4 +28,4 @@ if (process.env.NODE_ENV !== "test") {
     });
 }
 
-module.exports = app;
+export default app;
