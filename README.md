@@ -17,6 +17,10 @@ This workflow demonstrates several fundamental automation principles:
 - Secure Credentials via Github secrets
 - Separation of Deployments via backend and front end being deployed separately but remaining within the same pipeline. 
 
+<img src="assets/ci-cd-1.png" alt="CI/CD Partial Diagram" />
+
+<img src="assets/ci-cd-full.png" alt="CI/CD Full Diagram" />
+
 ### 1. Triggering the Workflow
 The workflow is initiated on any push event to the main branch. This ensures that only production-ready code is merged into the main branch. This step triggers the deployment process.
 ```
@@ -29,7 +33,7 @@ on:
 To improve automation flexibility and reliability, two advanced CI/CD triggers were added:
 - Manual Trigger (workflow_dispatch): This enables on-demand deployments directly from the GitHub Actions UI. It includes an optional input field to specify the environment, which defaults to "production" if not set. This is useful for ad hoc testing, hotfixes, or re-deployments without needing to push a commit.
 
-- Scheduled Trigger (cron): A schedule was implemented using cron syntax to automatically trigger the deployment every Monday at 10:00 AM. This ensures consistent and regular updates are pushed to production without manual intervention.
+- Scheduled Trigger (cron): A schedule was implemented using cron syntax to automatically trigger the deployment on the first of the month. This ensures consistent and regular updates are pushed to production without manual intervention.
 
 ```
   workflow_dispatch:
@@ -41,7 +45,7 @@ To improve automation flexibility and reliability, two advanced CI/CD triggers w
 
 
   schedule:
-    - cron: "0 23 * * 0"
+    - cron: "0 0 1 * *"
 ```
 
 ### 2. Workflow Environment and Runner
@@ -238,7 +242,7 @@ The VITE_API_BASE_URL variable configures the frontend to talk to the backend at
 ```
 
 # CI/CD Services and Technologies
-### AWS Fargate
+### AWS Fargate (Serverless Architecture)
 When choosing AWS, I had the choice between AWS Fargate and EC2. AWS Fargate and EC2 are both compute services, but they differ significantly in management and use cases. Fargate is a serverless container service that abstracts away the underlying infrastructure, allowing developers to focus purely on deploying containers. It automatically scales with workload demands and charges only for the exact resources used during task execution. In contrast, EC2 requires manual management of virtual machines, including operating system updates, scaling strategies, and instance provisioning, with billing based on instance uptime. Fargate is well-suited for microservices, event-driven applications, and short-lived jobs due to its fast startup time and minimal management overhead. EC2, however, offers full control over the environment, making it ideal for complex, long-running applications or those requiring specialized configurations. While Fargate emphasizes simplicity and speed, EC2 prioritizes flexibility and deep customization.
 
 In this CI/CD-managed application, Fargate allows GitHub Actions to build Docker images and push them to Amazon ECR. From there, ECS using Fargate can automatically deploy the latest version with minimal latency and no manual infrastructure management. This setup leads to faster release cycles, simplified deployment workflows, and better cost management, making Fargate a natural fit.
