@@ -1,19 +1,27 @@
 name: Deploy to ECS
 
 on:
-  push:
-    branches:
-      - main
-
   workflow_dispatch:
     inputs:
       environment:
         description: 'Deployment environment'
         required: false
         default: 'production'
+        
+# on:
+#   push:
+#     branches:
+#       - main
 
-  schedule:
-    - cron: "0 0 1 * *"
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: 'Deployment environment'
+#         required: false
+#         default: 'production'
+
+#   schedule:
+#     - cron: "0 0 1 * *"
 
 jobs:
   deploy:
